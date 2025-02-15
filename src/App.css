@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+html,
+body,
+#root{
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+}
+
+:root{
+    --mainBackgroundColor: '#0D1117';
+    --columnBackgroundColor: '#161C22';
+}
+
+::-webkit-scrollbar{
+    width: 4px;
+}
+
+::-webkit-scrollbar:horizontal{
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb{
+    /* background-color: #881337; Equivalent to bg-rose-900 */
+    /* border-radius: 0.75rem; Equivalent to rounded-xl */
+    @apply bg-rose-900 rounded-2xl
+}
+
+.task > ::-webkit-scrollbar-thumb{
+    @apply bg-sky-300 rounded-xl;
+}
