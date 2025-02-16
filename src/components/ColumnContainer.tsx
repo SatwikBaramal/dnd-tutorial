@@ -67,10 +67,6 @@ function ColumnContainer(props: Props) {
         );
     }
 
-    // function deleteTask(id: Id): void {
-    //     throw new Error("Function not implemented.");
-    // }
-
     return (
         <div
             ref={setNodeRef}

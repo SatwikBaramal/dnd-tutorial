@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import { Column, Id, Task } from "../types";
 import ColumnContainer from "./ColumnContainer";
@@ -17,14 +17,19 @@ import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 
 function KanbanBoard() {
-    const [columns, setColumns] = useState<Column[]>([]);
+    const [columns, setColumns] = useState<Column[]>(() => {
+        const savedColumns = localStorage.getItem("columns");
+        return savedColumns ? JSON.parse(savedColumns) : [];
+    });
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const savedTasks = localStorage.getItem("tasks");
+        return savedTasks ? JSON.parse(savedTasks) : [];
+    });
+
     const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-    const [tasks, setTasks] = useState<Task[]>([]);
-
     const [activeTask, setActiveTask] = useState<Task | null>(null);
-
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -33,6 +38,14 @@ function KanbanBoard() {
             },
         })
     );
+
+    useEffect(() => {
+        localStorage.setItem("columns", JSON.stringify(columns));
+    }, [columns]);
+
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
 
     return (
         <div
@@ -139,8 +152,6 @@ function KanbanBoard() {
     function deleteTask(id:Id){
         const newTasks = tasks.filter((task) => task.id !== id);
         setTasks(newTasks);
-
-        
     }
 
     function updateTask(id: Id, content: string){
